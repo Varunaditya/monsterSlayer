@@ -12,7 +12,7 @@ new Vue({
 			this.gameIsRunning = true;
 			this.playerHealth = 100;
 			this.monsterHealth = 100;
-			this.logs.unshift('The Game Has Started!');
+			this.logs.unshift({isPlayer: false, text: 'The Game Has Started!'});
 		},
 		attack: function(){
 			if(this.playerHealth > 0 & this.monsterHealth > 0){
@@ -20,8 +20,8 @@ new Vue({
 				var monsterDamage = this.randomNumberGenerator(5, 12);
 				this.monsterHealth -= playerDamage;
 				this.playerHealth -= monsterDamage;
-				this.logs.unshift('Player Damage: ' + playerDamage);
-				this.logs.unshift('Monster Damage: ' + monsterDamage);
+				this.logs.unshift({isPlayer: true, text: 'Player Damage: ' + playerDamage});
+				this.logs.unshift({isPlayer: false, text: 'Monster Damage: ' + monsterDamage});
 				this.winner();
 			}
 		},
@@ -31,23 +31,23 @@ new Vue({
 				var monsterDamage = this.randomNumberGenerator(5, 12);
 				this.monsterHealth -= playerDamage;
 				this.playerHealth -= monsterDamage;
-				this.logs.unshift('Player Damage (Special Attack): ' + playerDamage);
-				this.logs.unshift('Monster Damage: ' + monsterDamage);
+				this.logs.unshift({isPlayer: true, text: 'Player Damage (Special Attack): ' + playerDamage});
+				this.logs.unshift({isPlayer: false, text: 'Monster Damage: ' + monsterDamage});
 				this.winner();
 			}
 		},
 		healHealth: function(){
 			if(this.playerHealth > 0 & this.monsterHealth > 0){
 				if(this.playerHealth == 100){
-					this.logs.unshift('Player Health Is Full - Healing Ability Has No Use');
+					this.logs.unshift({isPlayer: true, text: 'Player Health Is Full - Healing Ability Has No Use'});
 				}
 				else{
 					var monsterDamage = this.randomNumberGenerator(3, 7);
 					this.playerHealth -= monsterDamage;
 					var healingFactor = this.randomNumberGenerator(4, 10);
 					this.playerHealth += healingFactor;
-					this.logs.unshift('Monster Damage: ' + monsterDamage);
-					this.logs.unshift('Player Health Healed: ' + healingFactor);
+					this.logs.unshift({isPlayer: true, text: 'Player Health Healed: ' + healingFactor});
+					this.logs.unshift({isPlayer: false, text: 'Monster Damage: ' + monsterDamage});
 				}
 			}	
 		},
@@ -61,11 +61,11 @@ new Vue({
 		winner: function(){
 			if(this.playerHealth <= 0 & this.monsterHealth > 0){
 				this.logs = [];
-				this.logs.unshift('You Have Lost!');
+				this.logs.unshift({isPlayer: false, text: 'You Have Lost!'});
 			}
 			else if(this.monsterHealth <= 0 & this.playerHealth > 0){
 				this.logs = [];
-				this.logs.unshift('You Have Won!');
+				this.logs.unshift({isPlayer: true, text: 'You Have Won!'});
 			}
 		}
 	}
